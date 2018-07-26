@@ -17,3 +17,31 @@
 version: '3.6'
 
 services:
+    nginx:
+        build: nginx
+        volumes:
+            # Time Zone and Local Time
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+            - ${PROJECT_PASS}:/var/www
+        ports:
+            - 80:80
+        depends_on:
+            - php-fpm
+        networks:
+            - project
+
+
+    php-fpm:
+        build: php-fpm
+        volumes:
+            # Time Zone and Local Time
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+            - ${PROJECT_PASS}:/var/www
+        networks:
+          - project
+
+networks:
+    project:
+        driver: bridge
