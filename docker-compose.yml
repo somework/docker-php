@@ -29,7 +29,9 @@ services:
         depends_on:
             - php-fpm
         networks:
-            - project
+            project:
+                aliases:
+                    - bitrix.local
 
     php-fpm:
         build: php-fpm
