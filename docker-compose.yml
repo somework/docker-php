@@ -31,7 +31,6 @@ services:
         networks:
             - project
 
-
     php-fpm:
         build: php-fpm
         volumes:
@@ -41,7 +40,30 @@ services:
             - ${PROJECT_PASS}:/var/www
         networks:
           - project
+          - mysql
+
+    mysql:
+        build: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            # Time Zone and Local Time
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+            - mysql_data:/var/lib/mysql
+        networks:
+            - mysql
+
 
 networks:
     project:
         driver: bridge
+    mysql:
+        driver: bridge
+
+volumes:
+    mysql_data:
+        external: false
